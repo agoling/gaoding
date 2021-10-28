@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Agoling</Authors>
+    <Product>UtilsSharp</Product>
+    <Company>Agoling</Company>
+    <PackageId>UtilsSharp.GaoDing.Sdk</PackageId>
+    <Description>稿定公司，稿定设计开放平台接口SDK:https://open.gaoding.com/docs/zhang-hu</Description>
+    <PackageProjectUrl>https://github.com/agoling/gaoding</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/agoling/gaoding</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="UtilsSharp" Version="2.4.5" />
+  </ItemGroup>
+
+</Project>
