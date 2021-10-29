@@ -104,27 +104,6 @@ namespace GaoDing.Sdk._Base
             }
         }
 
-        ///// <summary>
-        ///// HmacSha1加密
-        ///// </summary>
-        ///// <param name="str">要加密的原串</param>
-        /////<param name="key">私钥</param>
-        ///// <returns></returns>
-        //private static string HmacSha1(string str, string key)
-        //{
-        //    var hmacSha1 = new HMACSHA1();
-        //    hmacSha1.Key = Encoding.UTF8.GetBytes(key);
-        //    var dataBuffer = Encoding.UTF8.GetBytes(str);
-        //    var hashBytes = hmacSha1.ComputeHash(dataBuffer);
-        //    var enText = new StringBuilder();
-        //    foreach (byte iByte in hashBytes)
-        //    {
-        //        enText.AppendFormat("{0:x2}", iByte);
-        //    }
-        //    return enText.ToString();
-
-        //}
-
 
         /// <summary>
         /// HmacSha1加密
