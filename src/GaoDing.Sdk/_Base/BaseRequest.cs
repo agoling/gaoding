@@ -17,7 +17,7 @@ namespace GaoDing.Sdk._Base
         /// <summary>
         /// 请求参数
         /// </summary>
-        public Dictionary<string,string> P { set; get; }
+        public Dictionary<string,object> P { set; get; }
         /// <summary>
         /// 表示请求的http方法，大写， 如POST、GET、PUT
         /// </summary>

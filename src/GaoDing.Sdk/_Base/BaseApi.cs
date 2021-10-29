@@ -36,7 +36,7 @@ namespace GaoDing.Sdk._Base
                     //请求参数按照字母先后顺序排列
                     request.P?.OrderBy(m => m.Key.GetHashCode());
                     //把所有参数名和参数值进行拼装
-                    var qp = (from item in request.P where !string.IsNullOrEmpty(item.Value) select $"{item.Key}={item.Value}").ToList();
+                    var qp = (from item in request.P where !string.IsNullOrEmpty(item.Value?.ToString()) select $"{item.Key}={item.Value}").ToList();
                     canonicalQueryString = string.Join("&", qp);
                 }
                 var timestamp = TimeHelper.DateTimeToTimeStamp(DateTime.Now).ToString();
@@ -60,7 +60,6 @@ namespace GaoDing.Sdk._Base
                     webHelper.Headers.Add("X-Timestamp", timestamp);
                     webHelper.Headers.Add("X-AccessKey", request.Ak);
                     webHelper.Headers.Add("X-Signature", signature);
-                    var data = JsonConvert.SerializeObject(request.P);
                     try
                     {
                         if (request.Method == HttpMethod.Get)
@@ -72,6 +71,7 @@ namespace GaoDing.Sdk._Base
                         }
                         else
                         {
+                            var data = JsonConvert.SerializeObject(request.P);
                             var r = webHelper.UploadString($"http://open-api.gaoding.com{request.Url}", request.Method.ToString(), data);
                             result.Result = JsonConvert.DeserializeObject<T>(r);
                             return result;

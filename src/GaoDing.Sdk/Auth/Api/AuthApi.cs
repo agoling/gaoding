@@ -34,11 +34,32 @@ namespace GaoDing.Sdk.Auth.Api
                 Method = HttpMethod.Get,
                 ContentType = "application/x-www-form-urlencoded",
                 Url = "/api/authorized/code/",
-                P = new Dictionary<string, string> { { "app_id", Client.Setting.AppId },{ "uid", request.Uid}}
+                P = new Dictionary<string, object> { { "app_id", request.AppId },{ "uid", request.Uid}}
             };
             var r = Request<CodeResponse>(br);
             return r;
         }
+
+        /// <summary>
+        /// 获取权益使用凭证接口
+        /// </summary>
+        /// <param name="request">参数</param>
+        /// <returns></returns>
+        public BaseResult<UseCertResponse> UseCert(UseCertRequest request)
+        {
+            var br = new BaseRequest
+            {
+                Ak = Client.Setting.Ak,
+                Sk = Client.Setting.Sk,
+                Method = HttpMethod.Post,
+                ContentType = "application/json",
+                Url = "/api/use-cert/",
+                P = new Dictionary<string, object> { { "app_id", request.AppId }, { "ability_code", request.AbilityCode }, { "works_id", request.WorksId } }
+            };
+            var r = Request<UseCertResponse>(br);
+            return r;
+        }
+
 
     }
 }
