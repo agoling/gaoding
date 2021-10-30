@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
 using System.Text;
 using Newtonsoft.Json;
 using UtilsSharp;
@@ -52,47 +48,34 @@ namespace GaoDing.Sdk._Base
                     requestRawBuilder.Append($"{JsonConvert.SerializeObject(requestPayload)}");
                 }
                 var requestRaw = requestRawBuilder.ToString().TrimEnd('@');
-                var signature = HmacSha1(requestRaw, request.Sk);
-
+                var signature =requestRaw.ToBase64HmacSha1Encrypt(request.Sk,Encoding.UTF8);
                 using (var webHelper = new WebHelper())
                 {
                     webHelper.Headers.Add("Content-Type", request.ContentType);
                     webHelper.Headers.Add("X-Timestamp", timestamp);
                     webHelper.Headers.Add("X-AccessKey", request.Ak);
                     webHelper.Headers.Add("X-Signature", signature);
-                    try
+                    if (request.Method == HttpMethod.Get)
                     {
-                        if (request.Method == HttpMethod.Get)
+                        var r = webHelper.DoGet($"http://open-api.gaoding.com{request.Url}?{canonicalQueryString}");
+                        if (r.Code == 200)
                         {
+                            result.Result = JsonConvert.DeserializeObject<T>(r.Result);
+                            return result;
+                        }
+                        result.SetError(r.Msg, r.Code);
+                        return result;
 
-                            var r = webHelper.DownloadString($"http://open-api.gaoding.com{request.Url}?{canonicalQueryString}");
-                            result.Result = JsonConvert.DeserializeObject<T>(r);
-                            return result;
-                        }
-                        else
-                        {
-                            var data = JsonConvert.SerializeObject(request.P);
-                            var r = webHelper.UploadString($"http://open-api.gaoding.com{request.Url}", request.Method.ToString(), data);
-                            result.Result = JsonConvert.DeserializeObject<T>(r);
-                            return result;
-                        }
                     }
-                    catch (Exception ex)
+                    else
                     {
-                        if (ex.GetType().Name == "WebException")
+                        var r = webHelper.DoPost($"http://open-api.gaoding.com{request.Url}", request.P);
+                        if (r.Code == 200)
                         {
-                            var we = (WebException)ex;
-                            using (var hr = (HttpWebResponse)we.Response)
-                            {
-                                var statusCode = (int)hr.StatusCode;
-                                var sb = new StringBuilder();
-                                var sr = new StreamReader(hr.GetResponseStream(), Encoding.UTF8);
-                                sb.Append(sr.ReadToEnd());
-                                result.SetError($"{sb}", statusCode);
-                                return result;
-                            }
+                            result.Result = JsonConvert.DeserializeObject<T>(r.Result);
+                            return result;
                         }
-                        result.SetError(ex.Message,5000);
+                        result.SetError(r.Msg, r.Code);
                         return result;
                     }
                 }
@@ -103,26 +86,5 @@ namespace GaoDing.Sdk._Base
                 return result;
             }
         }
-
-
-        /// <summary>
-        /// HmacSha1加密
-        /// </summary>
-        /// <param name="str">要加密的原串</param>
-        ///<param name="key">私钥</param>
-        /// <returns></returns>
-        public static string HmacSha1(string str, string key)
-        {
-            var hmacSha1 = new HMACSHA1();
-            hmacSha1.Key = Encoding.UTF8.GetBytes(key);
-
-            var dataBuffer = Encoding.UTF8.GetBytes(str);
-            var hashBytes = hmacSha1.ComputeHash(dataBuffer);
-
-            return Convert.ToBase64String(hashBytes);
-
-        }
-
-
     }
 }
