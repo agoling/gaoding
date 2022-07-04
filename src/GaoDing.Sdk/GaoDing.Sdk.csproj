@@ -9,11 +9,11 @@
     <Description>稿定公司，稿定设计开放平台接口SDK:https://open.gaoding.com/docs/zhang-hu</Description>
     <PackageProjectUrl>https://github.com/agoling/gaoding</PackageProjectUrl>
     <RepositoryUrl>https://github.com/agoling/gaoding</RepositoryUrl>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="UtilsSharp" Version="2.4.6" />
+    <PackageReference Include="UtilsSharp" Version="2.5.0" />
   </ItemGroup>
 
 </Project>
