@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
 using UtilsSharp;
-using UtilsSharp.Standard;
+using UtilsSharp.Shared.Standard;
 
 namespace GaoDing.Sdk._Base
 {

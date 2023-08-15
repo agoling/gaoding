@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Text;
 using GaoDing.Sdk._Base;
 using GaoDing.Sdk.Auth.Model;
-using UtilsSharp.Standard;
+using UtilsSharp.Shared.Standard;
 
 namespace GaoDing.Sdk.Auth.Api
 {
